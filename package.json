@@ -1,0 +1,35 @@
+{
+  "name": "newsha-client",
+  "version": "1.0.1",
+  "description": "Newsha is a persian text-to-speech package for javascript",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "http-server ./test/",
+    "test-compile": "babel -w --presets es2015,stage-0 -d test/ src/",
+    "compile": "babel --presets es2015,stage-0 -d lib/ src/",
+    "compile-watch": "babel -w --presets es2015,stage-0 -d lib/ src/",
+    "prepublish": "npm run compile"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alireza29675/newsha.git"
+  },
+  "keywords": [
+    "farsi",
+    "persian",
+    "text-to-speech",
+    "speechRecognation"
+  ],
+  "author": "Alireza Sheikholmolouki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Alireza29675/newsha/issues"
+  },
+  "homepage": "https://github.com/Alireza29675/newsha#readme",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "http-server": "^0.10.0"
+  }
+}
