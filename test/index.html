@@ -9,30 +9,37 @@
 </head>
 <body>
     <h1>بگویید: [نوشته/پس زمینه] را قرمز کن</h1>
+    <script src="./require.js"></script>
     <script src="./index.js"></script>
     <script>
         var newsha = new Newsha();
-        var colors = {
-            green: "سبز",
-            red: "قرمز",
-            purple: "بنفش",
-            black: "مشکی",
-            white: "سفید",
-            yellow: "زرد",
-            blue: "آبی"
-        }
-        newsha.listen(function(result) {
-            console.log(result)
-            var element = null, prop = 'color';
-            if (result.includes('صفح') || result.includes('پس زمین')) {
-                element = document.body
-                prop = 'background'
-            }
-            if (result.includes('متن') || result.includes('نوشت')) element = document.querySelector('h1')
-            if (element !== null) {
-                for (let color in colors) if (result.includes(colors[color])) element.style[prop] = color;
-            }
+        newsha.command('صفحه', function (command, confidence, result) {
+            console.log(command, confidence, result)
+            element = document.body
+            prop = 'background'
+            doChanges(element, prop, result)
         })
+        newsha.command('نوشته', function (command, confidence, result) {
+            console.log(command, confidence, result)
+            element = document.querySelector('h1')
+            prop = 'color';
+            doChanges(element, prop, result)
+        })
+        newsha.listen()
+
+
+        var doChanges = function (element, prop, result) {
+            var colors = {
+                green: "سبز",
+                red: "قرمز",
+                purple: "بنفش",
+                black: "مشکی",
+                white: "سفید",
+                yellow: "زرد",
+                blue: "آبی"
+            }
+            for (let color in colors) if (result.includes(colors[color])) element.style[prop] = color;
+        }
     </script>
 </body>
 </html>
