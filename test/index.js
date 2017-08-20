@@ -19,8 +19,9 @@ var Newsha = function () {
         this.callback = callback;
         this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
         this.recognition.lang = config.lang || 'fa';
-        this.recognition.continuous = config.continuous || true;
+        this.recognition.continuous = config.continuous || false;
         this.recognition.onresult = this.onResult.bind(this);
+        this.recognition.onend = this.onEnd.bind(this);
     }
 
     _createClass(Newsha, [{
@@ -31,6 +32,12 @@ var Newsha = function () {
                 text += event.results[i][0].transcript;
             }
             this.callback(text);
+        }
+    }, {
+        key: 'onEnd',
+        value: function onEnd(event) {
+            console.log(event);
+            this.listen();
         }
     }, {
         key: 'listen',
