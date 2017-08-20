@@ -14,16 +14,20 @@
     <script>
         // Defining newsha basics and collections
         let newsha = new Newsha();
-        newsha.collection('color', ["سبز", "قرمز", "بنفش", "مشکی", "سفید", "زرد", "آبی"], function (item) {
+        newsha.collection('color', ["سبز", "قرمز", "بنفش", "مشکی", "سفید", "زرد", "آبی", "سیاه", "گلبهی", "اناری", "قهوه ای", "نیلی"], function (item) {
             switch (item) {
-                case 'سبز': return 'green';
-                case 'قرمز': return 'red';
-                case 'بنفش': return 'purple';
-                case 'مشکی': return 'black';
-                case 'سفید': return 'white';
-                case 'زرد': return 'yellow';
-                case 'آبی': return 'blue';
-                default: return 'black'
+                case 'سبز': return '#00c804';
+                case 'قرمز': return '#ff0000';
+                case 'بنفش': return '#c300ff';
+                case 'مشکی': case 'سیاه': return '#000000';
+                case 'سفید': return '#ffffff';
+                case 'قهوه ای': return '#7c3b16';
+                case 'زرد': return '#fff600';
+                case 'آبی': return '#0000ff';
+                case 'نیلی': return '#22477c';
+                case 'اناری': return '#940f12';
+                case 'گلبهی': return '#fb7665';
+                default: return '#000000'
             }
         });
     </script>
