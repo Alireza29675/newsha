@@ -9,30 +9,32 @@
 </head>
 <body>
     <h1>بگویید: [نوشته/پس زمینه] را قرمز کن</h1>
+    <script src="./require.js"></script>
     <script src="./index.js"></script>
     <script>
-        var newsha = new Newsha();
-        var colors = {
-            green: "سبز",
-            red: "قرمز",
-            purple: "بنفش",
-            black: "مشکی",
-            white: "سفید",
-            yellow: "زرد",
-            blue: "آبی"
-        }
-        newsha.listen(function(result) {
-            console.log(result)
-            var element = null, prop = 'color';
-            if (result.includes('صفحه') || result.includes('پس زمینه')) {
-                element = document.body
-                prop = 'background'
+        // Defining newsha basics and collections
+        let newsha = new Newsha();
+        newsha.collection('color', ["سبز", "قرمز", "بنفش", "مشکی", "سفید", "زرد", "آبی"], function (item) {
+            switch (item) {
+                case 'سبز': return 'green';
+                case 'قرمز': return 'red';
+                case 'بنفش': return 'purple';
+                case 'مشکی': return 'black';
+                case 'سفید': return 'white';
+                case 'زرد': return 'yellow';
+                case 'آبی': return 'blue';
+                default: return 'black'
             }
-            if (result.includes('متن') || result.includes('نوشته')) element = document.querySelector('h1')
-            if (element !== null) {
-                for (let color in colors) if (result.includes(colors[color])) element.style[prop] = color;
-            }
-        })
+        });
+    </script>
+    <script>
+        newsha.command('صفحه && {color}', function (result) {
+            document.body.style.background = result.collections.color
+        });
+        newsha.command('نوشته && {color}', function (result) {
+            document.querySelector('h1').style.color = result.collections.color
+        });
+        newsha.listen();
     </script>
 </body>
 </html>
