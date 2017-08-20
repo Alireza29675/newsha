@@ -18,6 +18,7 @@ class Newsha {
             config = {}
         }
         this.commands = [];
+        this.collections = {}
         this.minimumConfidence = 0.4;
         this.config = config;
         this.callback = callback;
@@ -50,6 +51,14 @@ class Newsha {
             command: cmd,
             callback: func
         })
+    }
+    collection (name, list, middleware = (item) => { return item }) {
+        this.collections[name] = [];
+        for (let item of list) this.collections[name].push({
+            name: item,
+            value: middleware(item)
+        })
+        return this.collections[name]
     }
     listen (callback) {
         if (callback) this.callback = callback;

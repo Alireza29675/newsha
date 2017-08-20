@@ -12,34 +12,26 @@
     <script src="./require.js"></script>
     <script src="./index.js"></script>
     <script>
-        var newsha = new Newsha();
-        newsha.command('صفحه', function (command, confidence, result) {
-            console.log(command, confidence, result)
-            element = document.body
-            prop = 'background'
-            doChanges(element, prop, result)
-        })
-        newsha.command('نوشته', function (command, confidence, result) {
-            console.log(command, confidence, result)
-            element = document.querySelector('h1')
-            prop = 'color';
-            doChanges(element, prop, result)
-        })
-        newsha.listen()
-
-
-        var doChanges = function (element, prop, result) {
-            var colors = {
-                green: "سبز",
-                red: "قرمز",
-                purple: "بنفش",
-                black: "مشکی",
-                white: "سفید",
-                yellow: "زرد",
-                blue: "آبی"
+        let newsha = new Newsha();
+        newsha.command('صفحه', function (result) {
+            document.body.background = color
+        });
+        newsha.command('نوشته', function (result) {
+            document.querySelector('h1').color = color
+        });
+        newsha.collection('color', ["سبز", "قرمز", "بنفش", "مشکی", "سفید", "زرد", "آبی"], function (item) {
+            switch (item) {
+                case 'سبز': return 'green';
+                case 'قرمز': return 'red';
+                case 'بنفش': return 'purple';
+                case 'مشکی': return 'black';
+                case 'سفید': return 'white';
+                case 'زرد': return 'yellow';
+                case 'آبی': return 'blue';
+                default: return 'black'
             }
-            for (let color in colors) if (result.includes(colors[color])) element.style[prop] = color;
-        }
+        });
+        newsha.listen();
     </script>
 </body>
 </html>
