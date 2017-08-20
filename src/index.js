@@ -12,16 +12,12 @@ String.prototype.faOptimize = function () {
 };
 
 class Newsha {
-    constructor (config = {}, callback = ()=>{}) {
-        if (typeof config === 'function') {
-            callback = config;
-            config = {}
-        }
+    constructor (config = {}) {
         this.commands = [];
         this.collections = {}
         this.minimumConfidence = 0.4;
         this.config = config;
-        this.callback = callback;
+        this.anyListeners = []
         this.recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
         this.recognition.lang = config.lang || 'fa';
         this.recognition.continuous = config.continuous || false;
@@ -31,8 +27,8 @@ class Newsha {
     onResult (event) {
         let ret = "";
         for (let result of event.results) ret += result[0].transcript;
+        for (let listener of this.anyListeners) listener(ret)
         this.checkResults(ret);
-        this.callback(ret)
     }
     onEnd () {
         this.listen()
@@ -72,7 +68,6 @@ class Newsha {
         }
     }
     checkResults (text) {
-        console.log(" ====> ", text)
         for (let command of this.commands) {
             let resultObject = {
                 command: command.command,
@@ -112,13 +107,13 @@ class Newsha {
         })
         return this.collections[name]
     }
-    listen (callback) {
-        if (callback) this.callback = callback;
-        if (this.config.onStart) this.config.onStart();
+    any (func) {
+        this.anyListeners.push(func)
+    }
+    listen () {
         this.recognition.start()
     }
     stop () {
-        if (this.config.onStop) this.config.onStop();
         this.recognition.stop()
     }
 }

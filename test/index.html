@@ -12,6 +12,8 @@
     <script src="./require.js"></script>
     <script src="./index.js"></script>
     <script>
+        var $ = function (query) { return document.querySelector(query) }
+        var $$ = function (query) { return document.querySelectorAll(query) }
         // Defining newsha basics and collections
         let newsha = new Newsha();
         newsha.collection('color', ["سبز", "قرمز", "بنفش", "مشکی", "سفید", "زرد", "آبی", "سیاه", "گلبهی", "اناری", "قهوه ای", "نیلی"], function (item) {
@@ -27,17 +29,37 @@
                 case 'نیلی': return '#22477c';
                 case 'اناری': return '#940f12';
                 case 'گلبهی': return '#fb7665';
-                default: return '#000000'
             }
         });
+        newsha.collection('position', ['بالا', 'پایین', 'چپ', 'راست', 'وسط'], function (item) {
+            switch (item) {
+                case 'بالا': return { top: '10%', left: '50%' };
+                case 'پایین': return { top: '90%', left: '50%' };
+                case 'وسط': return { top: '50%', left: '50%' };
+                case 'چپ': return { top: '50%', left: '30%' };
+                case 'راست': return { top: '50%', left: '70%' };
+            }
+        })
     </script>
     <script>
+        newsha.any(function(text) {
+            console.log(" ====> ", text)
+        })
         newsha.command('صفحه && {color}', function (result) {
             document.body.style.background = result.collections.color
         });
         newsha.command('نوشته && {color}', function (result) {
-            document.querySelector('h1').style.color = result.collections.color
+            $('h1').style.color = result.collections.color
         });
+        newsha.command('{position}', function (result) {
+            $('h1').style.top = result.collections.position.top
+            $('h1').style.left = result.collections.position.left
+        })
+        var rotation = 0;
+        newsha.command('برعکس', function (result) {
+            rotation += 180
+            $('h1').style.transform = 'translate(-50%, -50%) rotate(' + rotation + 'deg)'
+        })
         newsha.listen();
     </script>
 </body>
