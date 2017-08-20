@@ -37,13 +37,65 @@ class Newsha {
     onEnd () {
         this.listen()
     }
-    checkResults (result) {
-        for (let command of this.commands) {
-            let confidence = 0;
-            for (let word of result.split(' ')) {
-                confidence = Math.max(similarity(word.faOptimize(), command.command.faOptimize()), confidence)
+    checkSingleCommand (command, text) {
+        command = command.trim();
+        let confidence = 0;
+        let openningCollection = command.indexOf('{');
+        if (openningCollection !== -1) {
+            let closingCollection = command.indexOf('}');
+            let collectionName = command.substr(openningCollection+1, closingCollection - openningCollection - 1);
+            let choosedItem = null;
+            let highestConfidence = 0;
+            for (let item of this.collections[collectionName]) {
+                confidence = 0;
+                for (let word of text.split(' ')) {
+                    confidence = Math.max(similarity(word.faOptimize(), item.name.faOptimize()), confidence)
+                }
+                if (highestConfidence < confidence) {
+                    highestConfidence = confidence;
+                    choosedItem = item;
+                }
             }
-            if (confidence >= this.minimumConfidence) command.callback(command.command, confidence, result)
+            return {
+                collectionName: collectionName,
+                data: choosedItem,
+                confidence: highestConfidence,
+                isTrue: highestConfidence >= this.minimumConfidence
+            }
+        }
+        for (let word of text.split(' ')) {
+            confidence = Math.max(similarity(word.faOptimize(), command.faOptimize()), confidence)
+        }
+        return {
+            confidence: confidence,
+            isTrue: confidence >= this.minimumConfidence
+        }
+    }
+    checkResults (text) {
+        console.log(" ====> ", text)
+        for (let command of this.commands) {
+            let resultObject = {
+                command: command.command,
+                transcript: text,
+                collections: {}
+            };
+            let shouldRun = true;
+            let confidence = 0;
+            let andCommands = command.command.split('&&');
+            for (let cmd of andCommands) {
+                let result = this.checkSingleCommand(cmd, text);
+                shouldRun = shouldRun && result.isTrue;
+                confidence += result.confidence;
+                if (result.data) {
+                    resultObject.collections[result.collectionName] = result.data.value
+                }
+            }
+            confidence /= andCommands.length;
+            resultObject.confidence = confidence;
+
+            if (shouldRun) {
+                command.callback(resultObject)
+            }
         }
     }
     command (cmd, func) {

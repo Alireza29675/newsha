@@ -12,13 +12,8 @@
     <script src="./require.js"></script>
     <script src="./index.js"></script>
     <script>
+        // Defining newsha basics and collections
         let newsha = new Newsha();
-        newsha.command('صفحه', function (result) {
-            document.body.background = color
-        });
-        newsha.command('نوشته', function (result) {
-            document.querySelector('h1').color = color
-        });
         newsha.collection('color', ["سبز", "قرمز", "بنفش", "مشکی", "سفید", "زرد", "آبی"], function (item) {
             switch (item) {
                 case 'سبز': return 'green';
@@ -30,6 +25,14 @@
                 case 'آبی': return 'blue';
                 default: return 'black'
             }
+        });
+    </script>
+    <script>
+        newsha.command('صفحه && {color}', function (result) {
+            document.body.style.background = result.collections.color
+        });
+        newsha.command('نوشته && {color}', function (result) {
+            document.querySelector('h1').style.color = result.collections.color
         });
         newsha.listen();
     </script>
