@@ -24,11 +24,11 @@
         newsha.listen(function(result) {
             console.log(result)
             var element = null, prop = 'color';
-            if (result.includes('صفحه') || result.includes('پس زمینه')) {
+            if (result.includes('صفح') || result.includes('پس زمین')) {
                 element = document.body
                 prop = 'background'
             }
-            if (result.includes('متن') || result.includes('نوشته')) element = document.querySelector('h1')
+            if (result.includes('متن') || result.includes('نوشت')) element = document.querySelector('h1')
             if (element !== null) {
                 for (let color in colors) if (result.includes(colors[color])) element.style[prop] = color;
             }
