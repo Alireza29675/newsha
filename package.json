@@ -27,10 +27,10 @@
   },
   "homepage": "https://github.com/Alireza29675/newsha#readme",
   "dependencies": {
-    "http-server": "^0.10.0",
     "similarity": "^1.1.1"
   },
   "devDependencies": {
+    "http-server": "^0.10.0",
     "babel-cli": "^6.24.1",
     "babel-loader": "^7.1.2",
     "babel-preset-es2015": "^6.24.1",
