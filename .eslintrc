@@ -1,0 +1,16 @@
+{
+  "extends": "standard",
+  "parser": "babel-eslint",
+  "rules": {
+    "space-before-function-paren": [2, { "anonymous": "always", "named": "never" }],
+    "babel/generator-star-spacing": 2,
+    "babel/arrow-parens": [2, "as-needed"],
+    "babel/no-await-in-loop": 2
+  },
+  "plugins": [
+    "babel"
+  ],
+  "env": {
+    "node": true
+  }
+}
