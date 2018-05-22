@@ -111,6 +111,7 @@ class Newsha {
         this.anyListeners.push(func)
     }
     listen () {
+        this.recognition.lang = this.config.lang;
         this.recognition.start()
     }
     stop () {
